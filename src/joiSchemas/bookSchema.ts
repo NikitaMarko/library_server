@@ -15,3 +15,5 @@ export const GenreSchema = Joi.object({
         .lowercase()
         .required()
 });
+export const IdSchema = Joi.string().uuid({ version: 'uuidv4' });
+

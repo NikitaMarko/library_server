@@ -10,3 +10,5 @@ bookRouter.get('/', controller.getAllBooks);
 bookRouter.post('/', controller.addBook)
 bookRouter.delete('/', controller.removeBook)
 bookRouter.get('/genre', controller.getBookByGenre)
+bookRouter.put('/pickup/:id', controller.pickUpBook)
+bookRouter.put('/returnBook/:id', controller.returnBook)

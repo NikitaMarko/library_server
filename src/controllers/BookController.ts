@@ -4,7 +4,7 @@ import {Request,Response} from "express";
 import {Book, BookDto, BookGenres} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.ts";
 import {convertBookDtoToBook} from "../utils/tools.js";
-import {BookSchemas, GenreSchema} from "../joiSchemas/bookSchema.js";
+import {BookSchemas, GenreSchema, IdSchema} from "../joiSchemas/bookSchema.js";
 
 export class BookController {
     private libService: LibService = new LibServiceImplEmbedded();
@@ -13,6 +13,8 @@ export class BookController {
         this.addBook = this.addBook.bind(this);
         this.removeBook = this.removeBook.bind(this);
         this.getBookByGenre = this.getBookByGenre.bind(this);
+        this.pickUpBook = this.pickUpBook.bind(this);
+        this.returnBook = this.returnBook.bind(this);
     }
 
     getAllBooks(req:Request,res:Response){
@@ -28,6 +30,7 @@ export class BookController {
             res.status(201).json(book);
         else throw new HttpError(409, 'Book not added. Id conflict');
     }
+
     removeBook(req:Request,res:Response){
     const {error, value} = BookSchemas.validate(req.body);
         if(error) throw new HttpError(400,'Bad request');
@@ -39,8 +42,8 @@ export class BookController {
         }
         throw new HttpError(404, 'User not found')
     }
+
     getBookByGenre(req:Request,res:Response){
-        console.log('req.query:', req.query);
         const{error, value} = GenreSchema.validate(req.query);
         if(error) throw new HttpError(400,'Bad request');
         const {genre} = value;
@@ -55,4 +58,29 @@ export class BookController {
         res.status(200).json(isSuccess);
     }
 
+    pickUpBook(req: Request, res: Response) {
+        const { id } = req.params;
+        const { reader } = req.body;
+        const {error} = IdSchema.validate(id)
+        if (error) {
+            throw new HttpError(400, 'Invalid book id');
+        }
+        if (!reader) {
+            throw new HttpError(400, 'Reader is required');
+        }
+
+        this.libService.pickUpBook(id, reader);
+        res.status(200).json({ message: 'Book picked up successfully' });
+        throw new HttpError(400, 'Failed to pick up the book');
+        }
+
+    returnBook(req: Request, res: Response) {
+        const { id } = req.params;
+        const {error} = IdSchema.validate(id)
+        if (error) {
+        throw new HttpError(400, 'Invalid book id');
+            }
+        this.libService.returnBook(id);
+        res.status(200).json({ message: 'Book returned successfully' });
+        }
 }
