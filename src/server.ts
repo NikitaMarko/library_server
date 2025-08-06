@@ -5,7 +5,6 @@ import {errorHandler} from "./errorHandler/errorHandler.ts";
 
 export const launchServer = () => {
     const app = express();
-    app.listen(PORT, () => console.log(`Server runs at http://localhost:${PORT}`));
 
 
 //===================Middleware================
@@ -21,5 +20,6 @@ export const launchServer = () => {
 //====================Error Handler=====================
 app.use(errorHandler)
 
+    app.listen(PORT, () => console.log(`Server runs at http://localhost:${PORT}`));
 
 }
