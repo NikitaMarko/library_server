@@ -18,7 +18,8 @@ export class LibServiceImplEmbedded implements LibService{
     }
 
     getBooksByGenre(genre: BookGenres): Book[] {
-        return [];
+        const genres = this.books.filter(item => item.genre.toLowerCase() === genre.toLowerCase());
+        return genres as Book[];
     }
 
     pickUpBook(id: string, reader: string): void {

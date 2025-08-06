@@ -9,3 +9,9 @@ export const BookSchemas = Joi.object({
     status: Joi.string(),
     pickList:Joi.array(),
 })
+export const GenreSchema = Joi.object({
+    genre: Joi.string()
+        .valid('sci-fi', 'adventure', 'romantic', 'classic', 'dystopia', 'detective')
+        .lowercase()
+        .required()
+});
