@@ -1,6 +1,7 @@
-import {BookDto, BookGenres, BookStatus} from "../model/Book.ts";
+import {Book, BookDto, BookGenres, BookStatus} from "../model/Book.ts";
 import { v4 as uuidv4 } from 'uuid';
 import {HttpError} from "../errorHandler/HttpError.js";
+import {BookSchemas} from "../joiSchemas/bookSchema.js";
 
 function getGenres(genre: string) {
     const bookGenre = Object.values(BookGenres).find(value => value===genre);
@@ -16,5 +17,16 @@ export const convertBookDtoToBook = (dto:BookDto) =>{
         genre: getGenres(dto.genre),
         status: BookStatus.ON_STOCK,
         pickList:[]
+    }
+}
+export function bookObjectValidate(
+    book: Book | undefined,
+) {
+    if (!book) {
+        throw new HttpError (400, "Body is required");
+    }
+    const {error} = BookSchemas.validate(book);
+    if (error) {
+        throw new HttpError (400, error.message);
     }
 }

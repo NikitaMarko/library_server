@@ -3,7 +3,7 @@ import {LibServiceImplEmbedded} from "../services/libServiceImplEmbedded.ts";
 import {Request,Response} from "express";
 import {Book, BookDto, BookGenres} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.ts";
-import {convertBookDtoToBook} from "../utils/tools.js";
+import {bookObjectValidate, convertBookDtoToBook} from "../utils/tools.js";
 import {BookSchemas, GenreSchema, IdSchema} from "../joiSchemas/bookSchema.js";
 
 export class BookController {
@@ -25,22 +25,24 @@ export class BookController {
     addBook(req:Request,res:Response){
         const dto = req.body as BookDto;
         const book:Book = convertBookDtoToBook(dto);
+        bookObjectValidate(book);
         const result = this.libService.addBook(book);
         if(result)
             res.status(201).json(book);
         else throw new HttpError(409, 'Book not added. Id conflict');
     }
 
-    removeBook(req:Request,res:Response){
+     removeBook(req:Request,res:Response){
     const {error, value} = BookSchemas.validate(req.body);
         if(error) throw new HttpError(400,'Bad request');
         const book = value as Book;
+        bookObjectValidate(book);
         const isSuccess = this.libService.removeBook(book.id);
         if (isSuccess) {
-            res.status(200).json(isSuccess)
+            res.json(isSuccess)
             return;
         }
-        throw new HttpError(404, 'User not found')
+        throw new HttpError(404, 'Book not found')
     }
 
     getBookByGenre(req:Request,res:Response){
