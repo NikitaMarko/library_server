@@ -1,4 +1,5 @@
-
+import * as mongoose from "mongoose";
+import * as uuid from "uuid";
 export type BookDto = {
     title: string,
     author: string,
@@ -36,3 +37,12 @@ export type PickRecord = {
     pick_date: string,
     return_date: string | null
 }
+
+export const BookDtoMongooseSchema = new mongoose.Schema({
+    title: {type:String, required: true},
+    author: {type:String, required: true},
+    genre: {type:String, required: true},
+    quantity: {type:Number,required: false},
+})
+
+export const BookDtoDBModel = mongoose.model('Book', BookDtoMongooseSchema, 'book_collection');

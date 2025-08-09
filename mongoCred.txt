@@ -1,0 +1,3 @@
+Username:NikitaMarkovskii
+Password:QqrMHqGXXWRaGe5H
+Key: mongodb+srv://NikitaMarkovskii:QqrMHqGXXWRaGe5H@cluster-java-27-30.cttizwq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-Java-27-30
