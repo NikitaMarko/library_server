@@ -1,10 +1,12 @@
 import * as mongoose from "mongoose";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
+
 export type BookDto = {
     title: string,
     author: string,
     genre: string,
-    quantity?: number
+    quantity?: number,
+    _id?: string;
 }
 
 export type Book = {
@@ -39,10 +41,11 @@ export type PickRecord = {
 }
 
 export const BookDtoMongooseSchema = new mongoose.Schema({
-    title: {type:String, required: true},
-    author: {type:String, required: true},
-    genre: {type:String, required: true},
-    quantity: {type:Number,required: false},
+    _id: { type: String, default: uuidv4, required: true },
+    title: { type: String, required: true },
+    author: { type: String, required: true },
+    genre: { type: String, required: true },
+    quantity: { type: Number }
 })
 
 export const BookDtoDBModel = mongoose.model('Book', BookDtoMongooseSchema, 'book_collection');
