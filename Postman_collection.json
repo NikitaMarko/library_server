@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "87661645-e2ab-477c-947f-6d37b2d6074d",
-		"name": "First API",
+		"name": "Server Education",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "43732172",
 		"_collection_link": "https://java-27-30.postman.co/workspace/Java-27-30~6536d94a-c706-44f3-9a72-6ee14f27658b/collection/43732172-87661645-e2ab-477c-947f-6d37b2d6074d?action=share&source=collection_link&creator=43732172"
@@ -431,7 +431,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \"title\": \"War and piece\" ,\r\n    \"author\": \"Tolstoi\",\r\n    \"genre\": \"classic\"\r\n        }",
+							"raw": "{   \"title\": \"Little Prince\" ,\r\n    \"author\": \"Eqzuperi\",\r\n    \"genre\": \"classic\"\r\n        }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -500,7 +500,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \"id\": \"ad371c6c-90b8-46f7-b745-1fe5a3536612\"\r\n        }",
+							"raw": "{   \"id\": \"c63c6dfd-a9a2-4b26-b157-b91a27283b21\"\r\n        }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -528,11 +528,11 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"reader\": \"Michel Jackson\"\r\n}",
+							"raw": "{\r\n    \"reader\": \"Gleb Jeglov\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -540,7 +540,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3023/api/books/pickup/944eaee9-a573-47fb-9c9a-06fa8b2395d1",
+							"raw": "http://localhost:3023/api/books/pickup/c63c6dfd-a9a2-4b26-b157-b91a27283b21",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -550,7 +550,7 @@
 								"api",
 								"books",
 								"pickup",
-								"944eaee9-a573-47fb-9c9a-06fa8b2395d1"
+								"c63c6dfd-a9a2-4b26-b157-b91a27283b21"
 							]
 						}
 					},
@@ -562,14 +562,14 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3023/api/books/returnBook/abfe9828-62ec-4ec0-a732-c9d6d577a71e",
+							"raw": "http://localhost:3023/api/books/returnBook/c63c6dfd-a9a2-4b26-b157-b91a27283b21",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -579,7 +579,7 @@
 								"api",
 								"books",
 								"returnBook",
-								"abfe9828-62ec-4ec0-a732-c9d6d577a71e"
+								"c63c6dfd-a9a2-4b26-b157-b91a27283b21"
 							]
 						}
 					},
