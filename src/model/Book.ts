@@ -45,7 +45,7 @@ export const BookDtoMongooseSchema = new mongoose.Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
     genre: { type: String, required: true },
-    quantity: { type: Number },
+    quantity: { type: Number, min:0, default:0 },
     status: {
         type: String,
         enum: Object.values(BookStatus),
