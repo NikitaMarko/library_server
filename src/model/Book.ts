@@ -48,7 +48,7 @@ export const BookDtoMongooseSchema = new mongoose.Schema({
     quantity: { type: Number },
     status: {
         type: String,
-        enum: Object.values(BookStatus),
+        bookStatus: Object.values(BookStatus),
         default: BookStatus.ON_STOCK,
         required: true
     },

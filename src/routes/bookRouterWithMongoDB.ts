@@ -27,11 +27,11 @@ bookRouterWithMongoDB.get('/', async (req, res) => {
 })
 bookRouterWithMongoDB.delete('/', async (req, res) => {
     try {
-        const {_id} = req.body;
-        if (!_id || typeof _id !== 'string') {
+        const {id} = req.body;
+        if (!id || typeof id !== 'string') {
            return res.status(400).send('Invalid id or id not type of string');
         }
-        const book = await removeBook(_id);
+        const book = await removeBook(id);
         if(!book){
             return res.status(404).send('Book Not Found');
         }

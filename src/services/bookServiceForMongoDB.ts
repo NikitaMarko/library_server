@@ -50,6 +50,6 @@ export const returnBook = async (id:string) => {
 
 }
 
-export const removeBook = async (_id:string) => {
-    return BookDtoDBModel.findByIdAndDelete(_id);
+export const removeBook = async (id:string) => {
+    return BookDtoDBModel.findByIdAndDelete(id);
 }
