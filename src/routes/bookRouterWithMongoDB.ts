@@ -1,5 +1,5 @@
 import express from "express";
-import {addBook, getAllBooks, removeBook} from "../services/bookServiceForMongoDB.js";
+import {addBook, getAllBooks, getBookByGenre, removeBook} from "../services/bookServiceForMongoDB.js";
 
 export const bookRouterWithMongoDB = express.Router();
 
@@ -27,6 +27,22 @@ bookRouterWithMongoDB.delete('/', async (req, res) => {
             return res.status(404).send('Book Not Found');
         }
         return res.json(book);
+    } catch (e) {
+        const error = e as Error;
+        return res.status(400).send(error.message);
+    }
+})
+bookRouterWithMongoDB.get('/genre', async (req, res) => {
+    try {
+        const {genre} = req.query;
+        if (!genre || typeof genre !== 'string') {
+            return res.status(400).send('Invalid genre');
+        }
+        const books = await getBookByGenre(genre);
+        if (books.length === 0) {
+            return res.status(404).send('No books found with that genre');
+        }
+        return res.json(books);
     } catch (e) {
         const error = e as Error;
         return res.status(400).send(error.message);
