@@ -1,7 +1,9 @@
 import express from "express";
-import {addBook, getAllBooks, getBookByGenre, removeBook} from "../services/bookServiceForMongoDB.js";
+import {addBook, getAllBooks, getBookByGenre, pickUpBook, removeBook} from "../services/bookServiceForMongoDB.js";
+import {Response,Request} from "express";
 
 export const bookRouterWithMongoDB = express.Router();
+
 
 bookRouterWithMongoDB.post('/', async (req, res) => {
     try {
@@ -43,6 +45,24 @@ bookRouterWithMongoDB.get('/genre', async (req, res) => {
             return res.status(404).send('No books found with that genre');
         }
         return res.json(books);
+    } catch (e) {
+        const error = e as Error;
+        return res.status(400).send(error.message);
+    }
+})
+bookRouterWithMongoDB.patch('/pickup/:id', async (req:Request, res:Response) => {
+    try {
+        const { id } = req.params;
+        const { reader } = req.body;
+        // if (!id || typeof id !== 'string') {
+        //     return res.status(400).send('Book ID is required and must be a string');
+        // }
+
+        if (!reader || typeof reader !== 'string') {
+            return res.status(400).send('Reader is required and must be a string');
+        }
+        await pickUpBook(id, reader);
+        return res.status(200).send(`Book with ID ${id} successfully picked up by ${reader}`);
     } catch (e) {
         const error = e as Error;
         return res.status(400).send(error.message);

@@ -45,7 +45,20 @@ export const BookDtoMongooseSchema = new mongoose.Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
     genre: { type: String, required: true },
-    quantity: { type: Number }
+    quantity: { type: Number },
+    status: {
+        type: String,
+        enum: Object.values(BookStatus),
+        default: BookStatus.ON_STOCK,
+        required: true
+    },
+    pickList: [
+        {
+            reader: { type: String, required: true },
+            pick_date: { type: String, required: true },
+            return_date: { type: String, default: null }
+        }
+    ]
 })
 
 export const BookDtoDBModel = mongoose.model('Book', BookDtoMongooseSchema, 'book_collection');
