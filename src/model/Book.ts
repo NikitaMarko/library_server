@@ -48,15 +48,15 @@ export const BookDtoMongooseSchema = new mongoose.Schema({
     quantity: { type: Number },
     status: {
         type: String,
-        bookStatus: Object.values(BookStatus),
+        enum: Object.values(BookStatus),
         default: BookStatus.ON_STOCK,
         required: true
     },
     pickList: [
         {
             reader: { type: String, required: true },
-            pick_date: { type: String, required: true },
-            return_date: { type: String, default: null }
+            pick_date: { type: Date, required: true },
+            return_date: { type: Date, default: null }
         }
     ]
 })
