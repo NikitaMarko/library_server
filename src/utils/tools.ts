@@ -1,4 +1,4 @@
-import {Book, BookDto, BookGenres, BookStatus} from "../model/Book.ts";
+import {Book, BookDto, BookDtoDBModel, BookGenres, BookStatus} from "../model/Book.ts";
 import { v4 as uuidv4 } from 'uuid';
 import {HttpError} from "../errorHandler/HttpError.js";
 import {BookSchemas} from "../joiSchemas/bookSchema.js";
@@ -30,3 +30,10 @@ export function bookObjectValidate(
         throw new HttpError (400, error.message);
     }
 }
+export const getBookOrThrowError = async (id: string) => {
+    const book = await BookDtoDBModel.findById(id);
+    if (!book) {
+        throw new HttpError(404, `Book with id ${id} not found`);
+    }
+    return book;
+};

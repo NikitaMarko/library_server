@@ -1,5 +1,6 @@
 import {BookDto, BookDtoDBModel, BookStatus} from "../model/Book.js";
 import {HttpError} from "../errorHandler/HttpError.js";
+import {getBookOrThrowError} from "../utils/tools.js";
 
 export const addBook = async (data: BookDto) => {
     const bookToAdd = new BookDtoDBModel(data);
@@ -16,10 +17,8 @@ return BookDtoDBModel.find(bookGenre);
 }
 
 export const pickUpBook = async (id:string, reader:string) => {
-    const book = await BookDtoDBModel.findOne({ _id: id });
-    if (!book) {
-        throw new HttpError(404, `Book with id ${id} not found`);
-    }
+    const book = await getBookOrThrowError(id);
+
     if(book.status !== BookStatus.ON_STOCK) {
         throw new HttpError(400, 'The book is in the hands of readers');
     }
@@ -35,7 +34,21 @@ export const pickUpBook = async (id:string, reader:string) => {
 
 }
 
-export const returnBook = async (data: BookDto) => {}
+export const returnBook = async (id:string) => {
+    const book = await getBookOrThrowError(id);
+
+    if (book.status !== BookStatus.ON_HAND) {
+        throw new HttpError(404, 'Book is not currently borrowed');
+    }
+    const result = [...book.pickList].reverse().find(item => item.return_date === null);
+    if (!result) {
+        throw new HttpError(400,'No active pick record found for this book');
+    }
+    result.return_date = new Date().toISOString();
+    book.status = BookStatus.ON_STOCK;
+    await book.save();
+
+}
 
 export const removeBook = async (_id:string) => {
     return BookDtoDBModel.findByIdAndDelete(_id);
