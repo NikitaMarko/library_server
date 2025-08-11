@@ -44,7 +44,7 @@ export const returnBook = async (id:string) => {
     if (!result) {
         throw new HttpError(400,'No active pick record found for this book');
     }
-    result.return_date = new Date().toISOString();
+    result.return_date = new Date();
     book.status = BookStatus.ON_STOCK;
     await book.save();
 
