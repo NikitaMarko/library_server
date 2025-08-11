@@ -12,7 +12,7 @@ import {Response,Request} from "express";
 export const bookRouterWithMongoDB = express.Router();
 
 
-bookRouterWithMongoDB.post('/', async (req, res) => {
+bookRouterWithMongoDB.post('/', async (req:Request, res:Response) => {
     try {
         const book = await addBook(req.body);
         res.status(201).json(book);
@@ -21,11 +21,11 @@ bookRouterWithMongoDB.post('/', async (req, res) => {
         res.status(400).send(error.message);
     }
 })
-bookRouterWithMongoDB.get('/', async (req, res) => {
+bookRouterWithMongoDB.get('/', async (req:Request, res:Response) => {
         const books = await getAllBooks();
         res.json(books);
 })
-bookRouterWithMongoDB.delete('/', async (req, res) => {
+bookRouterWithMongoDB.delete('/', async (req:Request, res:Response) => {
     try {
         const {id} = req.body;
         if (!id || typeof id !== 'string') {
@@ -41,7 +41,7 @@ bookRouterWithMongoDB.delete('/', async (req, res) => {
         return res.status(400).send(error.message);
     }
 })
-bookRouterWithMongoDB.get('/genre', async (req, res) => {
+bookRouterWithMongoDB.get('/genre', async (req:Request, res:Response) => {
     try {
         const {genre} = req.query;
         if (!genre || typeof genre !== 'string') {
