@@ -28,7 +28,6 @@ export const launchServer = () => {
 //====================Error Handler=====================
 app.use(errorHandler)
 
-    mongoose.connect(db).then(()=>console.log('MongoDB Connected'));
     app.listen(PORT, () => console.log(`Server runs at http://localhost:${PORT}`));
 
 }

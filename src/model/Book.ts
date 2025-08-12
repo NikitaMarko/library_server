@@ -40,25 +40,25 @@ export type PickRecord = {
     return_date: string | null
 }
 
-export const BookDtoMongooseSchema = new mongoose.Schema({
-    _id: { type: String, default: uuidv4, required: true },
-    title: { type: String, required: true },
-    author: { type: String, required: true },
-    genre: { type: String, required: true },
-    quantity: { type: Number, min:0, default:0 },
-    status: {
-        type: String,
-        enum: Object.values(BookStatus),
-        default: BookStatus.ON_STOCK,
-        required: true
-    },
-    pickList: [
-        {
-            reader: { type: String, required: true },
-            pick_date: { type: Date, required: true },
-            return_date: { type: Date, default: null }
-        }
-    ]
-})
-
-export const BookDtoDBModel = mongoose.model('Book', BookDtoMongooseSchema, 'book_collection');
+// export const BookDtoMongooseSchema = new mongoose.Schema({
+//     _id: { type: String, default: uuidv4, required: true },
+//     title: { type: String, required: true },
+//     author: { type: String, required: true },
+//     genre: { type: String, required: true },
+//     quantity: { type: Number, min:0, default:0 },
+//     status: {
+//         type: String,
+//         enum: Object.values(BookStatus),
+//         default: BookStatus.ON_STOCK,
+//         required: true
+//     },
+//     pickList: [
+//         {
+//             reader: { type: String, required: true },
+//             pick_date: { type: Date, required: true },
+//             return_date: { type: Date, default: null }
+//         }
+//     ]
+// })
+//
+// export const BookDtoDBModel = mongoose.model('Book', BookDtoMongooseSchema, 'book_collection');

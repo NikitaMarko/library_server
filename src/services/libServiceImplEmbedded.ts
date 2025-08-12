@@ -1,29 +1,30 @@
 import {LibService} from "./libService.ts";
 import {Book, BookGenres, BookStatus} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.js";
+import {BookMongooseModel} from "../model/BookMongooseModel.js";
 
 export class LibServiceImplEmbedded implements LibService{
     private books: Book[] = [];
 
-    addBook(book: Book): boolean {
+    async addBook(book: Book): Promise <boolean> {
     const index = this.books.findIndex(item => item.id === book.id);
     if(index === -1) {
         this.books.push(book);
-    return true;
+    return new Promise(resolve => resolve(true));
     }
-        return false;
+        return Promise.resolve(true);
     }
 
-    getAllBooks(): Book[] {
+    async getAllBooks(): Promise<Book[]> {
         return [...this.books];
     }
 
-    getBooksByGenre(genre: BookGenres): Book[] {
+    async getBooksByGenre(genre: BookGenres): Promise<Book[]> {
         const genres = this.books.filter(item => item.genre.toLowerCase() === genre.toLowerCase());
         return genres as Book[];
     }
 
-    pickUpBook(id: string, reader: string): void {
+    async pickUpBook(id: string, reader: string): Promise<void> {
         const book = this.books.find(b => b.id === id);
         if (!book) {
             throw new HttpError(404,`Book with id ${id} not found`);
@@ -42,7 +43,7 @@ export class LibServiceImplEmbedded implements LibService{
         });
     }
 
-    removeBook(id: string): Book|null {
+    async removeBook(id: string): Promise<Book|null> {
     const indexBook = this.books.findIndex(item => item.id === id);
     if(indexBook !== -1) {
         const [deletedBook] = this.books.splice(indexBook, 1);
@@ -51,7 +52,7 @@ export class LibServiceImplEmbedded implements LibService{
     return null;
     }
 
-    returnBook(id: string): void {
+    async returnBook(id: string): Promise<void> {
         const book = this.books.find(b => b.id === id);
         if (!book) {
             throw new HttpError(404,`Book with id ${id} not found`);
@@ -68,4 +69,9 @@ export class LibServiceImplEmbedded implements LibService{
 
     }
 
+    async getBooksByGenreAndStatus(genre:BookGenres,status:BookStatus):Promise<Book[]> {
+        const result = await BookMongooseModel.find({genre,status}).exec() as Book[];
+        return Promise.resolve(result);
+
+}
 }
