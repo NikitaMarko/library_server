@@ -3,7 +3,6 @@ import {Book, BookGenres, BookStatus} from "../model/Book.js";
 import {pool} from "../config/libConfig.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import {ResultSetHeader, RowDataPacket} from "mysql2";
-import { v4 as uuidv4 } from 'uuid';
 
 
 export class libServiceImplSQL implements LibService{

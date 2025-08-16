@@ -1,6 +1,4 @@
-import * as mongoose from "mongoose";
-import { v4 as uuidv4 } from 'uuid';
-import {RowDataPacket} from "mysql2";
+
 
 export type BookDto = {
     title: string,

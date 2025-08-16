@@ -1,5 +1,4 @@
 import {LibService} from "../services/libService.ts";
-import {LibServiceImplEmbedded as service} from "../services/libServiceImplEmbedded.ts";
 import {Request,Response} from "express";
 import {Book, BookDto, BookGenres, BookStatus} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.ts";
