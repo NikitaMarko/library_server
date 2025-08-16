@@ -8,4 +8,5 @@ export interface LibService {
     getAllBooks:() => Promise<Book[]>;
     getBooksByGenre: (genre:BookGenres) => Promise <Book[]>;
     getBooksByGenreAndStatus: (genre:BookGenres, status:BookStatus) => Promise <Book[]>;
+    getBooksById: (id:string) => Promise <Book>;
 }

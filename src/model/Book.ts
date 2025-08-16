@@ -1,5 +1,6 @@
 import * as mongoose from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
+import {RowDataPacket} from "mysql2";
 
 export type BookDto = {
     title: string,
@@ -38,6 +39,16 @@ export type PickRecord = {
     reader: string,
     pick_date: string,
     return_date: string | null
+}
+export type Reader = {
+    id: string;
+    name: string;
+}
+export type BookReader = {
+    book_id: string;
+    reader_id: string;
+    pick_date: string;
+    return_date: string | null;
 }
 
 // export const BookDtoMongooseSchema = new mongoose.Schema({

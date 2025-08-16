@@ -65,6 +65,10 @@ export class LibServiceImplMongo implements LibService{
         const result = await BookMongooseModel.find({genre,status}).exec() as Book[];
         return Promise.resolve(result);
     }
+
+    getBooksById(id: string): Promise<Book> {
+        throw '';
+    }
 }
 
 

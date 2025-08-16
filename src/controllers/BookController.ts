@@ -5,10 +5,13 @@ import {Book, BookDto, BookGenres, BookStatus} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.ts";
 import {bookObjectValidate, convertBookDtoToBook} from "../utils/tools.js";
 import {BookSchemas, GenreSchema, IdSchema} from "../joiSchemas/bookSchema.js";
-import {LibServiceImplMongo} from "../services/libServiceImplMongo.js";
+// import {LibServiceImplMongo} from "../services/libServiceImplMongo.js";
+import {libServiceImplSQL} from "../services/libServiceImplSQL.js";
+import Joi from "joi";
 
 export class BookController {
-    private libService: LibService = new LibServiceImplMongo();
+    // private libService: LibService = new LibServiceImplMongo();
+    private libService: LibService = new libServiceImplSQL();
     constructor() {
         this.getAllBooks = this.getAllBooks.bind(this);
         this.addBook = this.addBook.bind(this);
@@ -17,6 +20,7 @@ export class BookController {
         this.pickUpBook = this.pickUpBook.bind(this);
         this.returnBook = this.returnBook.bind(this);
         this.getBooksByGenreAndStatus = this.getBooksByGenreAndStatus.bind(this);
+        this.getBooksById = this.getBooksById.bind(this);
     }
 
     async getAllBooks(req:Request,res:Response){
@@ -65,7 +69,7 @@ export class BookController {
     async pickUpBook(req: Request, res: Response) {
         const { id } = req.params;
         const { reader } = req.body;
-        const {error} = IdSchema.validate(id)
+        const {error} = Joi.string().uuid().required().validate(id)
         if (error) {
             throw new HttpError(400, 'Invalid book id');
         }
@@ -80,7 +84,7 @@ export class BookController {
 
     async returnBook(req: Request, res: Response) {
         const { id } = req.params;
-        const {error} = IdSchema.validate(id)
+        const {error} = Joi.string().uuid().required().validate(id);
         if (error) {
         throw new HttpError(400, 'Invalid book id');
             }
@@ -100,5 +104,16 @@ export class BookController {
 
             const result = await this.libService.getBooksByGenreAndStatus(getGenre as BookGenres, getStatus as BookStatus);
             res.json(result);
+        }
+        async getBooksById(req: Request, res: Response) {
+            const {error, value} = IdSchema.validate(req.params);
+            if (error) throw new HttpError(400, 'Bad request');
+            const {id} = value;
+            const isSuccess = await this.libService.getBooksById(id);
+            if (!isSuccess)
+                throw new HttpError(404, `No book found with id ${id}`);
+
+                res.status(200).json(isSuccess);
+
         }
 }

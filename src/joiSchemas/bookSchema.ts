@@ -10,12 +10,13 @@ export const BookSchemas = Joi.object({
 })
 export const GenreSchema = Joi.object({
     genre: Joi.string()
-        .valid('sci-fi', 'adventure', 'romantic', 'classic', 'dystopia', 'detective')
+        .valid('sci-fi', 'adventure', 'romantic', 'fantasy','classic', 'dystopia', 'detective')
         .lowercase()
         .required()
 });
-export const IdSchema = Joi.string().uuid({ version: 'uuidv4' });
-
+export const IdSchema = Joi.object({
+    id: Joi.string().uuid({ version: 'uuidv4' }).required()
+});
 export const BookDtoSchema = Joi.object({
     title: Joi.string().min(2).required(),
     author: Joi.string().min(1).required(),

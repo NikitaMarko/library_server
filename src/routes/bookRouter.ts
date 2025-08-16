@@ -7,11 +7,14 @@ export const bookRouter = express.Router();
 
 const controller = new BookController();
 
+bookRouter.get('/genre_status', controller.getBooksByGenreAndStatus)
+bookRouter.get('/genre', controller.getBookByGenre)
+bookRouter.get('/:id', controller.getBooksById)
 bookRouter.get('/', controller.getAllBooks);
 // bookRouter.post('/', bodyValidator(BookDtoJoiSchema), controller.addBook)
 bookRouter.post('/', bodyValidation(BookDtoSchema), controller.addBook)
 bookRouter.delete('/', controller.removeBook)
-bookRouter.get('/genre', controller.getBookByGenre)
+
 bookRouter.put('/pickup/:id', controller.pickUpBook)
 bookRouter.put('/returnBook/:id', controller.returnBook)
-bookRouter.get('/genre_status', controller.getBooksByGenreAndStatus)
+

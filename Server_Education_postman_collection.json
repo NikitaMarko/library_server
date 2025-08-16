@@ -431,7 +431,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \"title\": \"Little Prince\" ,\r\n    \"author\": \"Eqzuperi\",\r\n    \"genre\": \"classic\"\r\n        }",
+							"raw": "{   \"title\": \"Green Miles\" ,\r\n    \"author\": \"Stive King\",\r\n    \"genre\": \"fantasy\"\r\n        }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -455,19 +455,12 @@
 				},
 				{
 					"name": "getBookByGenre",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:3023/api/books/genre?genre=classic",
 							"protocol": "http",
@@ -500,7 +493,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \"id\": \"c63c6dfd-a9a2-4b26-b157-b91a27283b21\"\r\n        }",
+							"raw": "{   \"id\": \"3a731ad6-c9d8-4d7d-8bc1-bdbe983a4890\"\r\n        }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -528,11 +521,11 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"reader\": \"Gleb Jeglov\"\r\n}",
+							"raw": "{\r\n  \"reader\": \"f3e81a6a-4cd9-4e71-bf3b-ec3bb13e9aef\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -540,7 +533,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3023/api/books/pickup/c63c6dfd-a9a2-4b26-b157-b91a27283b21",
+							"raw": "http://localhost:3023/api/books/pickup/09bd972a-791a-4c5a-bffa-6798eeac89ea",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -550,7 +543,7 @@
 								"api",
 								"books",
 								"pickup",
-								"c63c6dfd-a9a2-4b26-b157-b91a27283b21"
+								"09bd972a-791a-4c5a-bffa-6798eeac89ea"
 							]
 						}
 					},
@@ -562,14 +555,14 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3023/api/books/returnBook/c63c6dfd-a9a2-4b26-b157-b91a27283b21",
+							"raw": "http://localhost:3023/api/books/returnBook/09bd972a-791a-4c5a-bffa-6798eeac89ea",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -579,7 +572,192 @@
 								"api",
 								"books",
 								"returnBook",
-								"c63c6dfd-a9a2-4b26-b157-b91a27283b21"
+								"09bd972a-791a-4c5a-bffa-6798eeac89ea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBooksByGenreAndStatus",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3023/api/books/genre_status?genre=fantasy&status=on stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"api",
+								"books",
+								"genre_status"
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "fantasy"
+								},
+								{
+									"key": "status",
+									"value": "on stock"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBookById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3023/api/books/acf19cce-6982-4185-8ef0-a87dbfb36cd7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"api",
+								"books",
+								"acf19cce-6982-4185-8ef0-a87dbfb36cd7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movie Collection",
+			"item": [
+				{
+					"name": "getMoviesByGenres",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3023/api/movie/by-genres/Action,Comedy",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"api",
+								"movie",
+								"by-genres",
+								"Action,Comedy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMoviesInLanguage",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3023/api/movie/movie-languages/Russian",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"api",
+								"movie",
+								"movie-languages",
+								"Russian"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMoviesWithLowerImdbThanTomatoes",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3023/api/movie/lower-imdb-than-tomatoes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"api",
+								"movie",
+								"lower-imdb-than-tomatoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTopAwardedMovies",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3023/api/movie/top-awarded",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"api",
+								"movie",
+								"top-awarded"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "groupMoviesByImdbRatingFrom2010",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3023/api/movie/group-by-imdb-2010",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"api",
+								"movie",
+								"group-by-imdb-2010"
 							]
 						}
 					},

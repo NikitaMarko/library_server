@@ -74,4 +74,10 @@ export class LibServiceImplEmbedded implements LibService{
         return Promise.resolve(result);
 
 }
+
+    getBooksById(id: string): Promise<Book> {
+        const res = this.books.find(b => b.id === id);
+        if(!res) throw new HttpError(404, `Book with id ${id} not found`);
+        return Promise.resolve(res);
+    }
 }
