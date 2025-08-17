@@ -116,6 +116,7 @@ export class libServiceImplSQL implements LibService{
         const book = rows[0];
         if(book.status !== BookStatus.ON_HAND)
             throw new HttpError(400, `Book with ID ${bookId} is not currently on hand`);
+
         await pool.execute(
             `UPDATE books_readers 
         SET return_date = CURDATE()

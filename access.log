@@ -153,3 +153,8 @@
 ::1 - - [16/Aug/2025:16:23:33 +0000] "PUT /api/books/returnBook/09bd972a-791a-4c5a-bffa-6798eeac89ea HTTP/1.1" 400 15 "-" "PostmanRuntime/7.45.0"
 ::1 - - [16/Aug/2025:16:25:56 +0000] "PUT /api/books/returnBook/09bd972a-791a-4c5a-bffa-6798eeac89ea HTTP/1.1" 200 40 "-" "PostmanRuntime/7.45.0"
 ::1 - - [16/Aug/2025:16:26:07 +0000] "GET /api/books HTTP/1.1" 200 257 "-" "PostmanRuntime/7.45.0"
+::1 - - [16/Aug/2025:17:36:27 +0000] "POST /api/books HTTP/1.1" 201 145 "-" "PostmanRuntime/7.45.0"
+::1 - - [16/Aug/2025:17:36:45 +0000] "PUT /api/books/pickup/3b3bc54e-d2f3-4dac-8188-1e9e596047c5 HTTP/1.1" 200 41 "-" "PostmanRuntime/7.45.0"
+::1 - - [16/Aug/2025:17:36:49 +0000] "GET /api/books HTTP/1.1" 200 388 "-" "PostmanRuntime/7.45.0"
+::1 - - [16/Aug/2025:17:37:06 +0000] "PUT /api/books/returnBook/3b3bc54e-d2f3-4dac-8188-1e9e596047c5 HTTP/1.1" 200 40 "-" "PostmanRuntime/7.45.0"
+::1 - - [16/Aug/2025:17:37:11 +0000] "GET /api/books HTTP/1.1" 200 389 "-" "PostmanRuntime/7.45.0"

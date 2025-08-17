@@ -1,7 +1,6 @@
 import {LibService} from "./libService.js";
 import {Book, BookGenres, BookStatus} from "../model/Book.js";
 import {BookMongooseModel} from "../model/BookMongooseModel.js";
-import {asyncWrapProviders} from "node:async_hooks";
 import {HttpError} from "../errorHandler/HttpError.js";
 
 export class LibServiceImplMongo implements LibService{
@@ -45,8 +44,23 @@ export class LibServiceImplMongo implements LibService{
          book.save();
     }
 
-    removeBook(id: string): Promise<Book | null> {
-        throw Promise.resolve(undefined);
+    async removeBook(id: string): Promise<Book | null> {
+        const result = await BookMongooseModel.findByIdAndDelete(id).exec();
+        if (!result) {
+            return null
+        }
+        return {
+            id: result._id.toString(),
+            title: result.title,
+            author: result.author,
+            genre: result.genre,
+            status: result.status,
+            pickList: result.pickList.map(p => ({
+                reader: p.reader,
+                pick_date: p.pick_date,
+                return_date: p.return_date,
+            }))
+        };
     }
 
     async returnBook(id: string): Promise<void> {
@@ -66,8 +80,18 @@ export class LibServiceImplMongo implements LibService{
         return Promise.resolve(result);
     }
 
-    getBooksById(id: string): Promise<Book> {
-        throw '';
+    async getBooksById(id: string): Promise<Book> {
+        const result = await BookMongooseModel.findOne({id}).exec();
+        if (!result)
+            throw new HttpError(404, `Book with id: ${id} not found`);
+        return {
+            id:result.id,
+            title:result.title,
+            author:result.author,
+            genre:result.genre,
+            status:result.status,
+            pickList:result.pickList
+        }
     }
 }
 

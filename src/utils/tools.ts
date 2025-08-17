@@ -4,10 +4,16 @@ import {HttpError} from "../errorHandler/HttpError.js";
 import {BookSchemas} from "../joiSchemas/bookSchema.js";
 import {BookMongooseModel} from "../model/BookMongooseModel.js";
 
-function getGenres(genre: string) {
+export function getGenres(genre: string) {
     const bookGenre = Object.values(BookGenres).find(value => value===genre);
     if (!bookGenre) throw new HttpError(400, 'Wrong genre');
     else return bookGenre;
+}
+export function getStatus(status: string) {
+    const bookStatus = Object.values(BookStatus).find(v => v === status);
+
+    if(!bookStatus) throw  new HttpError(400, "Wrong status")
+    else return bookStatus;
 }
 
 export const convertBookDtoToBook = (dto:BookDto) =>{
