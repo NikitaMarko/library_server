@@ -32,6 +32,10 @@ export class AccountServiceImplMongo implements AccountService{
             passHash:result.passHash
         }
     }
+    async getAllAccount():Promise<Readers[]>{
+     const result = await ReaderModel.find().exec() as Readers[];
+        return Promise.resolve(result);
+    }
 
     async removeAccount(id: number): Promise<Readers> {
         const temp = await ReaderModel.findByIdAndDelete(id);

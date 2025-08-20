@@ -10,3 +10,4 @@ accountRouter.post('/', bodyValidation(ReaderDtoSchema),controller.addAccount);
 accountRouter.get('/reader/:id', controller.getAccount);
 accountRouter.patch('/password', bodyValidation(ChangePasswordDtoSchema), controller.changePassword)
 accountRouter.delete('/:id', controller.removeAccount)
+accountRouter.get('/', controller.getAllAccount)

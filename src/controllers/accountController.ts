@@ -20,6 +20,10 @@ export const getAccount = async (req: Request, res: Response) => {
     const { passHash, ...safeUser } = result;
     res.status(200).json(safeUser)
 }
+export const getAllAccount = async (req: Request, res: Response) => {
+    const result = await accountServiceMongo.getAllAccount();
+    res.json(result);
+}
 export const changePassword = async (req: Request, res: Response) => {
     const {id, password} = req.body;
     if (!id || !password) {
