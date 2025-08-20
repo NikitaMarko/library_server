@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import {HttpError} from "../errorHandler/HttpError.js";
 import {BookSchemas} from "../joiSchemas/bookSchema.js";
 import {BookMongooseModel} from "../model/BookMongooseModel.js";
+import {Readers, ReadersDto} from "../model/Readers.js";
+import bcrypt from "bcryptjs";
 
 export function getGenres(genre: string) {
     const bookGenre = Object.values(BookGenres).find(value => value===genre);
@@ -26,6 +28,18 @@ export const convertBookDtoToBook = (dto:BookDto) =>{
         pickList:[]
     }
 }
+export const convertReaderDtoToReader = (dto:ReadersDto):Readers => {
+const salt = bcrypt.genSaltSync(10);
+const hash = bcrypt.hashSync(dto.password, salt);
+return {
+    _id:dto.id,
+    userName:dto.userName,
+    email:dto.email,
+    birthdate:dto.birthdate,
+    passHash:hash
+}
+}
+
 export function bookObjectValidate(
     book: Book | undefined,
 ) {
