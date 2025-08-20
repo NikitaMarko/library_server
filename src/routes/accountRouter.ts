@@ -7,6 +7,6 @@ export const accountRouter = express.Router();
 
 
 accountRouter.post('/', bodyValidation(ReaderDtoSchema),controller.addAccount);
-accountRouter.get('/reader', controller.getAccount);
+accountRouter.get('/reader/:id', controller.getAccount);
 accountRouter.patch('/password', bodyValidation(ChangePasswordDtoSchema), controller.changePassword)
-accountRouter.delete('/', controller.removeAccount)
+accountRouter.delete('/:id', controller.removeAccount)
