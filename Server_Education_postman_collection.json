@@ -877,6 +877,28 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "getAllAccount",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3023/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"accounts"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
