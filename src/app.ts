@@ -9,5 +9,4 @@ mongoose.connect(db).then(()=> {
     .catch(()=>{
         console.log("Something went wrong");
     })
-launchServer();
 

@@ -15,3 +15,7 @@ export const pool = mysql.createPool({
     password:process.env.DB_PASSWORD
 })
 
+export const SKIP_ROUTES = [
+    "POST/accounts"
+]
+

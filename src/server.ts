@@ -5,6 +5,9 @@ import morgan from "morgan";
 import * as fs from "node:fs";
 import dotenv from "dotenv";
 import {accountRouter} from "./routes/accountRouter.js";
+import {authentication, skipRoutes} from "./middleware/authentication.js";
+import {accountServiceMongo} from "./services/AccountServiceImplMongo.js";
+import {SKIP_ROUTES} from "./config/libConfig.js";
 
 
 export const launchServer = () => {
@@ -14,6 +17,8 @@ export const launchServer = () => {
     app.listen(process.env.PORT, () => console.log(`Server runs at http://localhost:${process.env.PORT}`));
     const logStream = fs.createWriteStream('access.log', {flags:'a'});
 //==================Middleware================
+    app.use(authentication(accountServiceMongo));
+    app.use(skipRoutes(SKIP_ROUTES));
     app.use(express.json());
     app.use(morgan('dev'));
     app.use(morgan('combined', {stream:logStream}))
