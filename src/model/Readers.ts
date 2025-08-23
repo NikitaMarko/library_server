@@ -1,3 +1,4 @@
+import {Roles} from "../utils/libTypes.js";
 
 export type ReadersDto = {
     id:number,
@@ -5,6 +6,7 @@ export type ReadersDto = {
     email:string,
     password:string,
     birthdate:string,
+    role?:Roles
 }
 
 export type Readers = {

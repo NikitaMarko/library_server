@@ -1,13 +1,17 @@
-import {Request,Response} from 'express'
+import {Request, Response} from 'express'
 import {Readers, ReadersDto} from "../model/Readers.js";
 import {convertReaderDtoToReader} from "../utils/tools.js";
 import {accountServiceMongo} from "../services/AccountServiceImplMongo.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import {ReaderIdSchema} from "../validation/joiSchema.js";
+import {AuthRequest, Roles} from "../utils/libTypes.js";
 
 
-export const addAccount = async (req: Request, res: Response) => {
+export const addAccount = async (req: AuthRequest, res: Response) => {
     const body = req.body;
+    if(!req.roles?.includes(Roles.ADMIN)) {
+        delete body.role
+    }
     const reader: Readers = convertReaderDtoToReader(body as ReadersDto);
     await accountServiceMongo.addAccount(reader)
     res.status(201).send();

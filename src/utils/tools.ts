@@ -5,6 +5,7 @@ import {BookSchemas} from "../joiSchemas/bookSchema.js";
 import {BookMongooseModel} from "../model/BookMongooseModel.js";
 import {Readers, ReadersDto} from "../model/Readers.js";
 import bcrypt from "bcryptjs";
+import {Roles} from "./libTypes.js";
 
 export function getGenres(genre: string) {
     const bookGenre = Object.values(BookGenres).find(value => value===genre);
@@ -36,7 +37,8 @@ return {
     userName:dto.userName,
     email:dto.email,
     birthdate:dto.birthdate,
-    passHash:hash
+    passHash:hash,
+    role:dto.role?? Roles.USER
 }
 }
 
