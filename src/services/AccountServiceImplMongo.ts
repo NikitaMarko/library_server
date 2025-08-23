@@ -21,16 +21,10 @@ export class AccountServiceImplMongo implements AccountService{
     }
 
     async getAccount(id: number): Promise<Readers> {
-        const result = await ReaderModel.findById(id);
+        const result = await ReaderModel.findById(id).exec();
         if (!result)
             throw new HttpError(404, `Reader with id: ${id} not found`);
-        return {
-            _id:result._id,
-            userName:result.userName,
-            email:result.email,
-            birthdate:result.birthdate,
-            passHash:result.passHash
-        }
+        return result
     }
     async getAllAccount():Promise<Readers[]>{
      const result = await ReaderModel.find().exec() as Readers[];
@@ -38,17 +32,14 @@ export class AccountServiceImplMongo implements AccountService{
     }
 
     async removeAccount(id: number): Promise<Readers> {
-        const temp = await ReaderModel.findByIdAndDelete(id);
+        const temp = await ReaderModel.findByIdAndDelete(id).exec();
         if (!temp) throw new HttpError(404, `Reader with id: ${id} not found`);
-        return {
-            _id:temp._id,
-            userName:temp.userName,
-            email:temp.email,
-            birthdate: temp.birthdate,
-            passHash:temp.passHash
-        }
-
+        return temp
     }
+
+
+
+
     /* version from Konstantin
     import {AccountService} from "./accountService.js";
 import {Reader} from "../model/Reader.js";
