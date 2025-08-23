@@ -20,9 +20,10 @@ export const SKIP_ROUTES = [
     "POST/accounts"
 ]
 export const  access: Record<string, Roles[]> = {
-    'GET/reader/:id': [Roles.USER],
-    'POST/': [Roles.USER],
+    'GET/reader/:id': [Roles.USER, Roles.ADMIN],
+    'POST/': [Roles.USER, Roles.ADMIN],
     'PATCH/password': [Roles.USER],
+    'PATCH/email-name-birthdate': [Roles.USER, Roles.ADMIN],
     'DELETE/:id': [Roles.ADMIN],
     'GET/': [Roles.ADMIN]
 };

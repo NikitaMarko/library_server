@@ -8,12 +8,20 @@ import {AuthRequest, Roles} from "../utils/libTypes.js";
 
 async function getBasicAuth(authHeader: string, service: AccountService, req: AuthRequest, res:Response):Promise<boolean> {
     const BASIC = "Basic ";
+    if (!authHeader || !authHeader.startsWith(BASIC)) {
+        res.status(401).send("Unauthorized: missing or invalid auth header");
+        return false;
+    }
     const auth = Buffer.from(authHeader.substring(BASIC.length), "base64").toString("ascii");
     console.log(auth);
     try {
         const [id, password] = auth.split(":");
         const _id = checkReaderId(id);
         const account = await service.getAccount(_id);
+        if (!(req.roles?.includes(Roles.USER) || req.roles?.includes(Roles.ADMIN))) {
+            res.status(403).send("Forbidden");
+            return false;
+        }
         if (bcrypt.compareSync(password, account.passHash)) {
             req.userId = account._id;
             req.userName = account.userName;
@@ -38,15 +46,16 @@ export const authentication = (service: AccountService)=> {
         const authHeader = req.header('authorization');
         console.log('authHeader: ', authHeader);
         if(roleHeader && Object.values(Roles).includes(roleHeader as Roles)) {
-            req.roles = [roleHeader as Roles];
+            req.roles = [roleHeader as Roles];}
+            else
+            {
+                req.roles = [Roles.GUEST]
+            }
 
         if (req.roles?.includes(Roles.USER) || req.roles?.includes(Roles.ADMIN)) {
             const result = await getBasicAuth(authHeader || '', service, req, res)
             if (!result)
                 return;
-        }
-        }else{
-            req.roles = [Roles.GUEST]
         }
         next();
     }
@@ -58,5 +67,4 @@ export const skipRoutes = (skipRoutes:string[]) =>
         if(!skipRoutes.includes(route) && !req.userId)
             throw new HttpError(401, "");
         next();
-
 }

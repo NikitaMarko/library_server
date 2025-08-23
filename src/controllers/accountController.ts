@@ -2,8 +2,6 @@ import {Request, Response} from 'express'
 import {Readers, ReadersDto} from "../model/Readers.js";
 import {convertReaderDtoToReader} from "../utils/tools.js";
 import {accountServiceMongo} from "../services/AccountServiceImplMongo.js";
-import {HttpError} from "../errorHandler/HttpError.js";
-import {ReaderIdSchema} from "../validation/joiSchema.js";
 import {AuthRequest, Roles} from "../utils/libTypes.js";
 
 
@@ -17,10 +15,8 @@ export const addAccount = async (req: AuthRequest, res: Response) => {
     res.status(201).send();
 }
 export const getAccount = async (req: Request, res: Response) => {
-    const {error, value} = ReaderIdSchema.validate(req.params);
-    if (error) throw new HttpError(400, error.message);
-    const {id} = value;
-    const result = await accountServiceMongo.getAccount(id);
+    const {id} = req.params;
+    const result = await accountServiceMongo.getAccount(Number(id));
     const { passHash, ...safeUser } = result;
     res.status(200).json(safeUser)
 }
@@ -30,33 +26,19 @@ export const getAllAccount = async (req: Request, res: Response) => {
 }
 export const changePassword = async (req: Request, res: Response) => {
     const {id, newPassword} = req.body;
-    if (!id || !newPassword) {
-        throw new HttpError(400, "Not id or newPassword");
-    }
     await accountServiceMongo.changePassword(Number(id), newPassword as string);
     res.status(204).send();
 }
 export const removeAccount = async (req: Request, res: Response) => {
     const {id} = req.params;
-    if (!id || isNaN(Number(id))) {
-        throw new HttpError(400, 'Invalid or missing ID');
-    }
     const result = await accountServiceMongo.removeAccount(Number(id))
     const { passHash, ...safeUser } = result
         res.json(safeUser)
 }
 export const changeEmailNameAndBirthdate = async (req: Request, res: Response) => {
-    try {
-        const {id, newEmail, newBirthdate, newName} = req.body;
-        if (!id || !newEmail || !newBirthdate || !newName)
-            throw new HttpError(400, "No data");
-
-
-        await accountServiceMongo.changeEmailNameAndBirthdate(id, newName, newEmail, newBirthdate);
-        res.status(200).send('Data updated successfully');
-    }catch (e) {
-        console.log(e)
-    }
+    const {id, newEmail, newBirthdate, newName} = req.body;
+    await accountServiceMongo.changeEmailNameAndBirthdate(id, newName, newEmail, newBirthdate);
+    res.status(200).send('Data updated successfully');
 }
 
 /* version from Konstantin
