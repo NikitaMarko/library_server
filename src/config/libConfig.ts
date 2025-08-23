@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import mysql from 'mysql2/promise'
+import {Roles} from "../utils/libTypes.js";
 
 export const PORT = 3023;
 export const db = 'mongodb+srv://NikitaMarkovskii:QqrMHqGXXWRaGe5H@cluster-java-27-30.cttizwq.mongodb.net/library?retryWrites=true&w=majority&appName=Cluster-Java-27-30';
@@ -18,4 +19,11 @@ export const pool = mysql.createPool({
 export const SKIP_ROUTES = [
     "POST/accounts"
 ]
+export const  access: Record<string, Roles[]> = {
+    'GET/reader/:id': [Roles.USER],
+    'POST/': [Roles.USER],
+    'PATCH/password': [Roles.USER],
+    'DELETE/:id': [Roles.ADMIN],
+    'GET/': [Roles.ADMIN]
+};
 

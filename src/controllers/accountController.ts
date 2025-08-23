@@ -25,11 +25,11 @@ export const getAllAccount = async (req: Request, res: Response) => {
     res.json(result);
 }
 export const changePassword = async (req: Request, res: Response) => {
-    const {id, password} = req.body;
-    if (!id || !password) {
+    const {id, newPassword} = req.body;
+    if (!id || !newPassword) {
         throw new HttpError(400, "Not id or newPassword");
     }
-    await accountServiceMongo.changePassword(Number(id), password as string);
+    await accountServiceMongo.changePassword(Number(id), newPassword as string);
     res.status(204).send();
 }
 export const removeAccount = async (req: Request, res: Response) => {
@@ -40,6 +40,19 @@ export const removeAccount = async (req: Request, res: Response) => {
     const result = await accountServiceMongo.removeAccount(Number(id))
     const { passHash, ...safeUser } = result
         res.json(safeUser)
+}
+export const changeEmailNameAndBirthdate = async (req: Request, res: Response) => {
+    try {
+        const {id, newEmail, newBirthdate, newName} = req.body;
+        if (!id || !newEmail || !newBirthdate || !newName)
+            throw new HttpError(400, "No data");
+
+
+        await accountServiceMongo.changeEmailNameAndBirthdate(id, newName, newEmail, newBirthdate);
+        res.status(200).send('Data updated successfully');
+    }catch (e) {
+        console.log(e)
+    }
 }
 
 /* version from Konstantin

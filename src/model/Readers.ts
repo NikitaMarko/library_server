@@ -13,4 +13,5 @@ export type Readers = {
     email:string,
     birthdate:string,
     passHash:string
+    role:string
 }

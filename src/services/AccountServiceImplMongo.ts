@@ -14,7 +14,7 @@ export class AccountServiceImplMongo implements AccountService{
     }
 
     async changePassword(id: number, newPassword: string): Promise<void> {
-        const reader = await ReaderModel.findById(id);
+        const reader = await ReaderModel.findById(id).exec();
         if(!reader) throw new HttpError(400, "Reader not found");
         reader.passHash = await bcrypt.hash(newPassword, 10);
         await reader.save();
@@ -35,6 +35,15 @@ export class AccountServiceImplMongo implements AccountService{
         const temp = await ReaderModel.findByIdAndDelete(id).exec();
         if (!temp) throw new HttpError(404, `Reader with id: ${id} not found`);
         return temp
+    }
+
+    async changeEmailNameAndBirthdate(id: number, newEmail: string, newName: string, newBirthdate: string): Promise<void> {
+        const result = await ReaderModel.findById(id);
+        if(!result) throw new HttpError(400, "Reader not found");
+        result.userName = newName;
+        result.birthdate = newBirthdate;
+        result.email = newEmail;
+        await result.save()
     }
 
 
