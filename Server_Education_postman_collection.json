@@ -802,7 +802,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 123456789,\r\n  \"userName\": \"JohnDoe\",\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"SecurePass123\",\r\n  \"birthdate\": \"1990-01-01\"\r\n}",
+							"raw": "{\r\n  \"id\": 555555555,\r\n  \"userName\": \"Nikita Arsov\",\r\n  \"email\": \"nm@example.com\",\r\n  \"password\": \"SecurePass333\",\r\n  \"birthdate\": \"1994-11-22\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -895,6 +895,56 @@
 							"port": "3023",
 							"path": [
 								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changeEmailNameAndBirthdate",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "200000000",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-role",
+								"value": "user",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n  \"id\": 200000000,\r\n  \"newEmail\": \"newjohn@example.com\",\r\n  \"newUserName\": \"John Updated\",\r\n  \"newBirthdate\": \"1990-12-12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3023/accounts/email-name-birthdate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3023",
+							"path": [
+								"accounts",
+								"email-name-birthdate"
 							]
 						}
 					},
