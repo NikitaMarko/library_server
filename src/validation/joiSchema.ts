@@ -16,11 +16,11 @@ export const ReaderIdSchema = Joi.object({
 
 export const ChangePasswordDtoSchema = Joi.object({
     id:Joi.number().positive().min(100000000).max(999999999).required(),
-    password:Joi.string().alphanum().min(8).required()
+    newPassword:Joi.string().alphanum().min(8).required()
 })
 export const ChangeEmailNameBirthdateDtoSchema = Joi.object({
     id:Joi.number().positive().min(100000000).max(999999999).required(),
-    userName:Joi.string().min(1).required(),
-    email:Joi.string().email().required(),
-    birthdate:Joi.string().isoDate().required()
+    newUserName:Joi.string().min(1).required(),
+    newEmail:Joi.string().email().required(),
+    newBirthdate:Joi.string().isoDate().required()
 })

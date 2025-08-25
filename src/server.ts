@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request,Response,NextFunction} from 'express';
 import {libRouter} from "./routes/libRouter.ts";
 import {errorHandler} from "./errorHandler/errorHandler.ts";
 import morgan from "morgan";
@@ -7,6 +7,8 @@ import dotenv from "dotenv";
 import {accountRouter} from "./routes/accountRouter.js";
 import {authentication, skipRoutes} from "./middleware/authentication.js";
 import {accountServiceMongo} from "./services/AccountServiceImplMongo.js";
+import {HttpError} from "./errorHandler/HttpError.js";
+import {SKIP_ROUTES} from "./config/libConfig.js";
 
 
 export const launchServer = () => {
@@ -21,9 +23,15 @@ export const launchServer = () => {
     app.use(morgan('combined', {stream:logStream}))
     app.use(express.json());
     app.use(authentication(accountServiceMongo));
-    // app.use(skipRoutes(SKIP_ROUTES));
+    app.use(skipRoutes(SKIP_ROUTES));
 
-    // app.use((req: Request, res:Response, next:NextFunction) => next())
+    app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+        if (err instanceof HttpError) {
+            res.status(err.status).send(err.message);
+        } else {
+            res.status(500).send('Internal server error');
+        }
+    });
 //==================Router====================
     app.use('/accounts', accountRouter)
     app.use('/api', libRouter);

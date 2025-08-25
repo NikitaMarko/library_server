@@ -37,10 +37,10 @@ export class AccountServiceImplMongo implements AccountService{
         return temp
     }
 
-    async changeEmailNameAndBirthdate(id: number, newEmail: string, newName: string, newBirthdate: string): Promise<void> {
+    async changeEmailNameAndBirthdate(id: number, newEmail: string, newUserName: string, newBirthdate: string): Promise<void> {
         const result = await ReaderModel.findById(id);
         if(!result) throw new HttpError(400, "Reader not found");
-        result.userName = newName;
+        result.userName = newUserName;
         result.birthdate = newBirthdate;
         result.email = newEmail;
         await result.save()

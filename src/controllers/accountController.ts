@@ -1,8 +1,9 @@
 import {Request, Response} from 'express'
 import {Readers, ReadersDto} from "../model/Readers.js";
-import {convertReaderDtoToReader} from "../utils/tools.js";
+import {checkReaderId, convertReaderDtoToReader} from "../utils/tools.js";
 import {accountServiceMongo} from "../services/AccountServiceImplMongo.js";
 import {AuthRequest, Roles} from "../utils/libTypes.js";
+
 
 
 export const addAccount = async (req: AuthRequest, res: Response) => {
@@ -16,7 +17,8 @@ export const addAccount = async (req: AuthRequest, res: Response) => {
 }
 export const getAccount = async (req: Request, res: Response) => {
     const {id} = req.params;
-    const result = await accountServiceMongo.getAccount(Number(id));
+    const _id = checkReaderId(id as string);
+    const result = await accountServiceMongo.getAccount(_id);
     const { passHash, ...safeUser } = result;
     res.status(200).json(safeUser)
 }
@@ -36,8 +38,8 @@ export const removeAccount = async (req: Request, res: Response) => {
         res.json(safeUser)
 }
 export const changeEmailNameAndBirthdate = async (req: Request, res: Response) => {
-    const {id, newEmail, newBirthdate, newName} = req.body;
-    await accountServiceMongo.changeEmailNameAndBirthdate(id, newName, newEmail, newBirthdate);
+    const {id, newEmail, newBirthdate, newUserName} = req.body;
+    await accountServiceMongo.changeEmailNameAndBirthdate(id, newUserName, newEmail, newBirthdate);
     res.status(200).send('Data updated successfully');
 }
 
