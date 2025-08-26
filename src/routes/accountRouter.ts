@@ -44,6 +44,7 @@ accountRouter.delete('/:id',
     })
 
 accountRouter.get('/',
+    authorize(access),
     async (req: AuthRequest, res:Response) => {
     await controller.getAllAccount(req,res)
     })
