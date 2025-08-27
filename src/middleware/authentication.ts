@@ -1,84 +1,58 @@
 import {AccountService} from "../services/accountService.js";
-import {NextFunction, Response} from "express";
-import bcrypt from "bcryptjs";
-import {AuthRequest, Roles} from "../utils/libTypes.js";
-import {SKIP_ROUTES} from "../config/libConfig.js";
+import {NextFunction, Request, Response} from "express";
 import {checkReaderId} from "../utils/tools.js";
+import bcrypt from "bcryptjs";
+import {HttpError} from "../errorHandler/HttpError.js";
+import {AuthRequest, Roles} from "../utils/libTypes.js";
 
 
-export async function getBasicAuth(authHeader: string, service: AccountService, req: AuthRequest, res: Response): Promise<boolean> {
+async function getBasicAuth(authHeader: string, service: AccountService, req: AuthRequest, res: Response) {
     const BASIC = "Basic ";
+    const auth = Buffer.from(authHeader.substring(BASIC.length), "base64").toString("ascii");
+    console.log(auth);
 
-    if (!authHeader || !authHeader.startsWith(BASIC)) {
-        res.status(401).send("");
-        return false;
-    }
+    const [id, password] = auth.split(":");
+    const _id = checkReaderId(id);
+    console.log(process.env.OWNER!)
+    console.log(process.env.OWNER_PASS)
+    if (_id == (+process.env.OWNER!) && password === process.env.OWNER_PASS) {
+        req.userId = 10000000;
+        req.roles = [Roles.SUPERVISOR];
+    } else {
+        try {
+            const account = await service.getAccountById(_id);
+            if (bcrypt.compareSync(password, account.passHash)) {
+                req.userId = account._id;
+                req.userName = account.userName;
+                req.roles = account.role;
+                console.log("AUTHENTICATED")
+            } else {
+                console.log("NOT AUTHENTICATED")
 
-    try {
-        const auth = Buffer.from(authHeader.substring(BASIC.length), "base64").toString("ascii");
-        const [id, password] = auth.split(":");
-
-        const _id = checkReaderId(id);
-        const account = await service.getAccount(_id);
-        if (!account) {
-            res.status(404).send("Account not found");
-            return false;
+            }
+        } catch (e) {
+            console.log("NOT AUTHENTICATED because Internal Http Errors")
         }
-
-        if (!(req.roles?.includes(Roles.USER) || req.roles?.includes(Roles.ADMIN))) {
-            res.status(403).send("");
-            return false;
-        }
-
-        if (bcrypt.compareSync(password, account.passHash)) {
-            req.userId = account._id;
-            req.userName = account.userName;
-            req.roles = req.roles || [Roles.GUEST];
-            return true;
-        } else {
-            res.status(401).send("");
-            return false;
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(401).send("");
-        return false;
     }
 }
 
-export const authentication = (service: AccountService) => {
-    return async (req: AuthRequest, res: Response, next: NextFunction) => {
-        const route = req.method + req.path;
-        if (SKIP_ROUTES.includes(route)) {
-            req.roles = [Roles.GUEST];
-            return next();
-        }
+export const authenticate = (service: AccountService) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        const authHeader = req.header('Authorization');
+        console.log(authHeader);
+        if (authHeader)
+            await getBasicAuth(authHeader, service, req, res)
+        next();
+    }
+}
 
-        const roleHeader = req.header("x-role");
-        const authHeader = req.header("authorization");
 
-        if (roleHeader && Object.values(Roles).includes(roleHeader as Roles)) {
-            req.roles = [roleHeader as Roles];
-        } else {
-            req.roles = [Roles.GUEST];
-        }
 
-        if (authHeader && authHeader.startsWith("Basic ")) {
-            const ok = await getBasicAuth(authHeader, service, req, res);
-            if (!ok) return;
-        }
-        return next();
-    };
-};
 export const skipRoutes = (skipRoutes: string[]) =>
     (req: AuthRequest, res: Response, next: NextFunction) => {
-        const route = req.method + req.path;
+        const route = req.method + req.path
+        if (!skipRoutes.includes(route) && !req.userId)
+            throw new HttpError(401, "skipRoutes sent throw this error");
 
-        if (skipRoutes.includes(route)) {
-            return next();
-        }
-        if (req.userId) {
-            return next();
-        }
-        res.status(401).send("");
-    };
+        next();
+    }

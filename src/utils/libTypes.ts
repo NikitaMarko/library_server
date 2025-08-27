@@ -7,7 +7,8 @@ export interface AuthRequest extends e.Request{
 }
 
 export enum Roles {
-    USER = 'user',
-    ADMIN = 'admin',
-    GUEST = 'guest'
+    USER = "user",
+    ADMIN = "admin",
+    GUEST = "guest",
+    SUPERVISOR = "super"
 }

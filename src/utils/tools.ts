@@ -38,7 +38,7 @@ return {
     email:dto.email,
     birthdate:dto.birthdate,
     passHash:hash,
-    role:dto.role?? Roles.USER
+    role: [Roles.USER]
 }
 }
 

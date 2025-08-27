@@ -7,8 +7,7 @@ const readerMongoSchema = new mongoose.Schema({
     email: { type: String, required: true },
     birthdate: { type: String, required: true },
     passHash: { type: String, required: true },
-    role: {type: String, enum: Object.values(Roles), default: Roles.USER}
-})
+    roles: {type:[String], enum: Roles, required:true}})
 
 export const ReaderModel = mongoose
 .model('Reader', readerMongoSchema, 'reader_collection')

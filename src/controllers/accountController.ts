@@ -15,10 +15,10 @@ export const addAccount = async (req: AuthRequest, res: Response) => {
     await accountServiceMongo.addAccount(reader)
     res.status(201).send();
 }
-export const getAccount = async (req: Request, res: Response) => {
-    const {id} = req.params;
+export const getAccountById = async (req: Request, res: Response) => {
+    const id = req.params.id;
     const _id = checkReaderId(id as string);
-    const result = await accountServiceMongo.getAccount(_id);
+    const result = await accountServiceMongo.getAccountById(_id);
     const { passHash, ...safeUser } = result;
     res.status(200).json(safeUser)
 }
@@ -32,7 +32,8 @@ export const changePassword = async (req: Request, res: Response) => {
     res.status(204).send();
 }
 export const removeAccount = async (req: Request, res: Response) => {
-    const {id} = req.params;
+
+    const id = Number(req.params.id);
     const result = await accountServiceMongo.removeAccount(Number(id))
     const { passHash, ...safeUser } = result
         res.json(safeUser)
@@ -41,6 +42,12 @@ export const changeEmailNameAndBirthdate = async (req: Request, res: Response) =
     const {id, newEmail, newBirthdate, newUserName} = req.body;
     await accountServiceMongo.changeEmailNameAndBirthdate(id, newUserName, newEmail, newBirthdate);
     res.status(200).send('Data updated successfully');
+}
+export const changeRoles = async (req: Request, res: Response) => {
+    const id = checkReaderId(req.query.id as string);
+    const newRoles = req.body as Roles[];
+    const readerWithNewRoles = await accountServiceMongo.changeRoles(id, newRoles);
+    res.json(readerWithNewRoles)
 }
 
 /* version from Konstantin

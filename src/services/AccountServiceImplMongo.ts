@@ -3,6 +3,7 @@ import {Readers} from "../model/Readers.js";
 import {ReaderModel} from "../model/ReaderMongooseModel.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import bcrypt from "bcryptjs";
+import {Roles} from "../utils/libTypes.js";
 
 export class AccountServiceImplMongo implements AccountService{
 
@@ -20,30 +21,33 @@ export class AccountServiceImplMongo implements AccountService{
         await reader.save();
     }
 
-    async getAccount(id: number): Promise<Readers> {
+    async getAccountById(id: number): Promise<Readers> {
         const result = await ReaderModel.findById(id).exec();
         if (!result)
             throw new HttpError(404, `Reader with id: ${id} not found`);
-        return result
+        return result as unknown as Readers;
     }
     async getAllAccount():Promise<Readers[]>{
-     const result = await ReaderModel.find().exec() as Readers[];
+     const result = await ReaderModel.find().exec() as unknown as Readers[];
         return Promise.resolve(result);
     }
 
     async removeAccount(id: number): Promise<Readers> {
         const temp = await ReaderModel.findByIdAndDelete(id).exec();
         if (!temp) throw new HttpError(404, `Reader with id: ${id} not found`);
-        return temp
+        return temp as unknown as Readers;
     }
 
-    async changeEmailNameAndBirthdate(id: number, newEmail: string, newUserName: string, newBirthdate: string): Promise<void> {
-        const result = await ReaderModel.findById(id);
+    async changeEmailNameAndBirthdate(id: number, newEmail: string, newUserName: string, newBirthdate: string): Promise<Readers> {
+        const result = await ReaderModel.findByIdAndUpdate(id);
         if(!result) throw new HttpError(400, "Reader not found");
-        result.userName = newUserName;
-        result.birthdate = newBirthdate;
-        result.email = newEmail;
-        await result.save()
+        return result as unknown as Readers;
+    }
+    async changeRoles(id: number, newRoles: Roles[]): Promise<Readers> {
+        const result =
+            await ReaderModel.findByIdAndUpdate(id, {roles : newRoles},{new:true})
+        if(!result) throw new HttpError(404, "Account not found");
+        return result as unknown as Readers;
     }
 
 
