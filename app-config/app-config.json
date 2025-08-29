@@ -13,13 +13,12 @@
     "PUT/accounts/roles" : ["super"],
     "GET/api/books/book/:id" : ["user", "admin"],
     "GET/api/books/genre" : ["user", "librarian"],
-    "GET/api/books/gen_st" : ["librarian"],
+    "GET/api/books/genre_status" : ["librarian"],
     "POST/api/books":["admin"],
     "DELETE/api/books":["admin"],
-    "PATCH/api/books/pickup":["librarian"],
-    "PATCH/api/books/return":["librarian"],
+    "PATCH/api/books/pickup.:id":["librarian"],
+    "PATCH/api/books/returnBook/:id":["librarian"],
     "GET/api/books/books_reader":["admin", "librarian"]
-
   },
   "checkIdRoutes": [
     "GET/accounts/reader_id",

@@ -28,7 +28,6 @@ async function getBasicAuth(authHeader: string, service: AccountService, req: Au
                 console.log("AUTHENTICATED")
             } else {
                 console.log("NOT AUTHENTICATED")
-
             }
         } catch (e) {
             console.log("NOT AUTHENTICATED because Internal Http Errors")

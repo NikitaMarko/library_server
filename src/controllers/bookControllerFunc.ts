@@ -5,7 +5,7 @@ import {convertBookDtoToBook, getGenres, getStatus} from "../utils/tools.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import {libServiceImplMongo as service} from "../services/libServiceImplMongo.js";
 import {accountServiceMongo as acc_service} from "../services/AccountServiceImplMongo.ts"
-import {Reader, ReaderDto} from "../model/Reader.js";
+
 
 export const getBooksByGenreAndStatus = async (req: Request, res: Response) => {
     const {genre, status} = req.query;
@@ -31,20 +31,23 @@ export const returnBook = async (req: Request, res: Response) => {
 
 
 export const pickUpBook = async (req: Request, res: Response) => {
-    const { id, reader } = req.body as { id: string; reader: Reader };
-    await service.pickUpBook(id as string, reader);
-    res.send(`Book picked by ${reader}`)
+    const { readerId } = req.query;
+    const { id } = req.params;
+
+    const reader = await acc_service.getAccountById(parseInt(readerId as string));
+    await service.pickUpBook(id, reader);
+    res.send(`Book picked by ${reader.userName}`);
 }
+
 
 
 export const addBook = async (req: Request, res: Response) => {
     const dto = req.body as BookDto;
     const book: Book = convertBookDtoToBook(dto);
     const result = await service.addBook(book);
-    console.log(result)
     if (result)
         res.status(201).send("Book successfully added")
-    else throw new HttpError(409, 'Book not added. Id conflict')
+    else throw new HttpError(409, 'Book not added')
 }
 
 export const getAllBooks =async (req: Request, res: Response) => {
@@ -58,9 +61,10 @@ export const removeBook = async (req: Request, res: Response) => {
     res.json(result);
 }
 export const getBooksByReaderId = async (req: Request, res: Response) => {
-    const {readerId} = req.query;
-    await acc_service.getAccountById(parseInt(readerId as string));
-    const result = await service.getBooksByReaderId(parseInt(readerId as string));
+    const { readerId } = req.query;
+    const id = Number(readerId);
+    await acc_service.getAccountById(id);
+    const result = await service.getBooksByReaderId(id);
     res.json(result);
 }
 

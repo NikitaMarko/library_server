@@ -18,17 +18,11 @@ export const addAccount = async (req: AuthRequest, res: Response) => {
 export const getAccountById = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const id = req.params.id;
-        console.log("Incoming id param:", id);
-
         const _id = checkReaderId(id);
-        console.log("Validated id:", _id);
-
         const result = await accountServiceMongo.getAccountById(_id);
-        console.log("DB result:", result);
-
         const { passHash, ...safeUser } = result;
         res.status(200).json(safeUser);
-    } catch (error) {
+    }   catch (error) {
         console.error("Controller error:", error);
         next(error);
     }
@@ -44,7 +38,6 @@ export const changePassword = async (req: Request, res: Response) => {
     res.status(204).send();
 }
 export const removeAccount = async (req: Request, res: Response) => {
-
     const id = Number(req.params.id);
     const result = await accountServiceMongo.removeAccount(Number(id))
     const { passHash, ...safeUser } = result

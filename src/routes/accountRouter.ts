@@ -32,6 +32,9 @@ accountRouter.delete('/:id',
 accountRouter.get('/',
     controller.getAllAccount);
 
+accountRouter.get('/reader/:id',
+    controller.getAccountById);
+
 accountRouter.put('/roles',
     bodyValidation(ChangeRolesSchema),
     controller.changeRoles)
