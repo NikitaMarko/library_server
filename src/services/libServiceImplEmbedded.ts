@@ -1,7 +1,6 @@
 import {LibService} from "./libService.ts";
 import {Book, BookGenres, BookStatus} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.js";
-import {BookMongooseModel} from "../model/BookMongooseModel.js";
 import {Reader} from "../model/Reader.js";
 
 export class LibServiceImplEmbedded implements LibService{

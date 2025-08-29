@@ -11,30 +11,19 @@ import {
 export const accountRouter = express.Router();
 
 
-accountRouter.post('/',
-    bodyValidation(ReaderDtoSchema),
-   controller.addAccount);
+accountRouter.post('/',bodyValidation(ReaderDtoSchema),controller.addAccount);
 
-accountRouter.get('/reader/:id',
-    controller.getAccountById);
+accountRouter.get('/reader/:id',controller.getAccountById);
 
-accountRouter.patch('/password',
-    bodyValidation(ChangePassDtoSchema),
-    controller.changePassword)
+accountRouter.patch('/password',bodyValidation(ChangePassDtoSchema),controller.changePassword)
 
-accountRouter.patch('/email-name-birthdate',
-    bodyValidation(ChangeEmailNameBirthdateDtoSchema),
+accountRouter.patch('/email-name-birthdate',bodyValidation(ChangeEmailNameBirthdateDtoSchema),
     controller.changeEmailNameAndBirthdate)
 
-accountRouter.delete('/:id',
-    controller.removeAccount)
+accountRouter.delete('/:id',controller.removeAccount)
 
-accountRouter.get('/',
-    controller.getAllAccount);
+accountRouter.get('/',controller.getAllAccount);
 
-accountRouter.get('/reader/:id',
-    controller.getAccountById);
+accountRouter.get('/reader/:id',controller.getAccountById);
 
-accountRouter.put('/roles',
-    bodyValidation(ChangeRolesSchema),
-    controller.changeRoles)
+accountRouter.put('/roles',bodyValidation(ChangeRolesSchema),controller.changeRoles)

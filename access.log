@@ -457,3 +457,4 @@
 ::1 - 333333333 [29/Aug/2025:17:26:23 +0000] "GET /api/books/books_reader?readerId=333333333 HTTP/1.1" 404 33 "-" "PostmanRuntime/7.45.0"
 ::1 - 333333333 [29/Aug/2025:17:31:40 +0000] "GET /api/books/books_reader?readerId=333333333 HTTP/1.1" 404 33 "-" "PostmanRuntime/7.45.0"
 ::1 - 333333333 [29/Aug/2025:17:35:50 +0000] "GET /api/books/books_reader?readerId=333333333 HTTP/1.1" 404 33 "-" "PostmanRuntime/7.45.0"
+::1 - 333333333 [29/Aug/2025:18:17:39 +0000] "GET /api/books/books_reader?readerId=333333333 HTTP/1.1" 200 481 "-" "PostmanRuntime/7.45.0"

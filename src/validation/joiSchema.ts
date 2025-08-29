@@ -1,5 +1,4 @@
 import Joi from "joi";
-import {Roles} from "../utils/libTypes.js";
 
 export const ReaderDtoSchema = Joi.object({
     id:Joi.number().positive().max(999999999).min(100000000).required(),
