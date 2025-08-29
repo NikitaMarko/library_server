@@ -1,14 +1,16 @@
 import {LibService} from "./libService.js";
 import {Book, BookGenres, BookStatus} from "../model/Book.js";
-import {pool} from "../config/libConfig.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import {ResultSetHeader, RowDataPacket} from "mysql2";
+import {configuration} from "../config/libConfig.js";
+
 
 
 export class libServiceImplSQL implements LibService{
 
+
     async addBook(book: Book): Promise<boolean> {
-        const result = await pool.query("INSERT INTO books VALUES (?,?,?,?,?)",
+        const result = await configuration.pool.query("INSERT INTO books VALUES (?,?,?,?,?)",
             [book.id, book.title, book.author, book.genre, book.status]);
         if(!result)
         return Promise.resolve(false);
@@ -18,7 +20,7 @@ export class libServiceImplSQL implements LibService{
     async removeBook(id: string): Promise<Book | null> {
         const book = await this.getBooksById(id)
         const record = 'DELETE FROM books WHERE id = ?';
-        const [rows] = await pool.execute<ResultSetHeader>(record,[id]);
+        const [rows] = await configuration.pool.execute<ResultSetHeader>(record,[id]);
         if(rows.affectedRows === 0)
             throw new HttpError(404,`Could not remove book with id ${id}`);
         return book;
@@ -26,7 +28,7 @@ export class libServiceImplSQL implements LibService{
 
     async getAllBooks(): Promise<Book[]> {
         const record = 'SELECT id, title, author, genre, status FROM books';
-        const [rows] = await pool
+        const [rows] = await configuration.pool
             .query(record);
         const book = rows as Book[];
         if(book.length === 0)
@@ -36,7 +38,7 @@ export class libServiceImplSQL implements LibService{
 
     async getBooksById(id: string): Promise<Book> {
         const record = 'SELECT * FROM books WHERE id = ?';
-        const [rows] = await pool.execute<RowDataPacket[]>(record, [id]);
+        const [rows] = await configuration.pool.execute<RowDataPacket[]>(record, [id]);
         if (rows.length === 0)
             throw new HttpError(404, `Book with id ${id} not found`);
         return  {
@@ -53,7 +55,7 @@ export class libServiceImplSQL implements LibService{
 
     async getBooksByGenre(genre: BookGenres): Promise<Book[]> {
         const record = 'SELECT * FROM books WHERE genre = ?';
-        const [rows] = await pool.execute<RowDataPacket[]>(record,[genre]);
+        const [rows] = await configuration.pool.execute<RowDataPacket[]>(record,[genre]);
         if (rows.length === 0)
             throw new HttpError(404, `Book with ${genre} not found`);
         return rows.map(row => ({
@@ -68,7 +70,7 @@ export class libServiceImplSQL implements LibService{
 
     async getBooksByGenreAndStatus(genre: BookGenres, status: BookStatus): Promise<Book[]> {
         const record = 'SELECT * FROM books WHERE genre = ? AND status = ?';
-        const [rows] = await pool.execute<RowDataPacket[]>(record, [genre, status]);
+        const [rows] = await configuration.pool.execute<RowDataPacket[]>(record, [genre, status]);
         if (rows.length === 0)
             throw new HttpError(404, `Book with ${genre} and ${status} not found`);
         return rows.map(row => ({
@@ -83,7 +85,7 @@ export class libServiceImplSQL implements LibService{
 
     async pickUpBook(bookId: string, readerId: string): Promise<void> {
         const record_book = 'SELECT * FROM books WHERE id = ?';
-        const [rows] = await pool.execute<RowDataPacket[]>(record_book, [bookId]);
+        const [rows] = await configuration.pool.execute<RowDataPacket[]>(record_book, [bookId]);
         if (rows.length === 0)
             throw new HttpError(404, `Book with ${bookId} not found`);
         const book = rows[0];
@@ -91,16 +93,16 @@ export class libServiceImplSQL implements LibService{
             throw new HttpError(400, `Book with ID ${bookId} is not available.`);
 
         const record_reader = 'SELECT * FROM readers WHERE id = ?';
-        const [readers] = await pool.execute<RowDataPacket[]>(record_reader, [readerId]);
+        const [readers] = await configuration.pool.execute<RowDataPacket[]>(record_reader, [readerId]);
         if (readers.length === 0)
             throw new HttpError(404, `Reader with ID ${readerId} not found`);
 
-        await pool.execute(
+        await configuration.pool.execute(
             'INSERT INTO books_readers (book_id, reader_id, pick_date) VALUES (?, ?, CURDATE())',
             [bookId, readerId]
         );
 
-        await pool.execute(
+        await configuration.pool.execute(
             'UPDATE books SET status = ? WHERE id = ?',
             [BookStatus.ON_HAND, bookId]
         )
@@ -110,14 +112,14 @@ export class libServiceImplSQL implements LibService{
 
     async returnBook(bookId: string): Promise<void> {
         const record = 'SELECT * FROM books WHERE id = ?';
-        const [rows] = await pool.execute<RowDataPacket[]>(record,[bookId]);
+        const [rows] = await configuration.pool.execute<RowDataPacket[]>(record,[bookId]);
         if (rows.length === 0)
             throw new HttpError(404, `Book with ID ${bookId} not found`);
         const book = rows[0];
         if(book.status !== BookStatus.ON_HAND)
             throw new HttpError(400, `Book with ID ${bookId} is not currently on hand`);
 
-        await pool.execute(
+        await configuration.pool.execute(
             `UPDATE books_readers 
         SET return_date = CURDATE()
         WHERE book_id = ? AND return_date IS NULL
@@ -126,7 +128,7 @@ export class libServiceImplSQL implements LibService{
             [bookId]
         );
 
-        await pool.execute(
+        await configuration.pool.execute(
             'UPDATE books SET status = ? WHERE id = ?',
             [BookStatus.ON_STOCK, bookId]
         )
