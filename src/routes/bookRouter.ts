@@ -1,20 +1,18 @@
 import express from 'express'
-import {BookController} from "../controllers/BookController.js";
 import {bodyValidation} from "../validation/bodyValidation.js";
-import {BookDtoSchema} from "../joiSchemas/bookSchema.js";
-
+import {BookDtoSchema} from "../validation/joiSchema.js";
+import * as controller from "../controllers/bookControllerFunc.js"
 export const bookRouter = express.Router();
 
-const controller = new BookController();
 
-bookRouter.get('/genre_status', controller.getBooksByGenreAndStatus)
-bookRouter.get('/genre', controller.getBookByGenre)
-bookRouter.get('/:id', controller.getBooksById)
+
 bookRouter.get('/', controller.getAllBooks);
-// bookRouter.post('/', bodyValidator(BookDtoJoiSchema), controller.addBook)
+bookRouter.get('/:id', controller.getBookById)
 bookRouter.post('/', bodyValidation(BookDtoSchema), controller.addBook)
 bookRouter.delete('/', controller.removeBook)
-
 bookRouter.put('/pickup/:id', controller.pickUpBook)
 bookRouter.put('/returnBook/:id', controller.returnBook)
+bookRouter.get('/genre', controller.getBooksByGenre)
+bookRouter.get('/genre_status', controller.getBooksByGenreAndStatus)
+bookRouter.get('/books_reader', controller.getBooksByReaderId);
 

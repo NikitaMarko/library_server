@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import mysql, {Pool} from 'mysql2/promise'
-// @ts-ignore
-import appConf from "../../app-config/app-config.json"
+
+import appConf from "../../app-config/app-config.json" with { type: 'json' };
 
 
 export interface AppConfig {
@@ -10,9 +10,15 @@ export interface AppConfig {
     pathRoles:Record<string, string[]>,
     checkIdRoutes:string[],
     pool:Pool,
-    db:string
+    db:string,
+    jwt:{
+        secret:string,
+        exp:string|number
+    }
 
 }
+
+dotenv.config();
 
 export const configuration:AppConfig ={
     ...appConf,
@@ -23,5 +29,9 @@ export const configuration:AppConfig ={
         user:process.env.DB_USER,
         password:process.env.DB_PASSWORD
     }),
-    db:process.env.db || "dev db address"
+    db:process.env.db || "dev db address",
+    jwt:{
+        secret:process.env.JWT_SECRET || "super-secret",
+        exp:process.env.JWT_EXP || "1h"
+    }
 }

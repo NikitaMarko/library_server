@@ -1,73 +1,38 @@
-
-
 export type BookDto = {
-    title: string,
-    author: string,
-    genre: string,
-    quantity?: number,
-    _id?: string;
+    title:string,
+    author:string,
+    genre:string,
+    quantity?:number
 }
 
 export type Book = {
     id: string,
-    title: string,
-    author: string,
+    title:string,
+    author:string,
     genre: BookGenres,
     status: BookStatus,
-    pickList:PickRecord[]
+    pickList: PickRecord[]
 }
 
 export enum BookGenres {
-    "SCI_FI"= 'sci-fi',
+    "SCI_FI" = 'sci-fi',
     "ADVENTURE" = 'adventure',
     "FANTASY" = 'fantasy',
     "ROMANTIC" = 'romantic',
     "CLASSIC" = 'classic',
     "DYSTOPIA" = 'dystopia',
-    "DETECTIVE" = 'detective'
+    "DETECTIVE" = "detective"
 }
 
 export enum BookStatus {
-    "ON_STOCK" = 'on stock',
-    "ON_HAND" = 'on hand',
-    "REMOVED" = 'removed',
+    "ON_STOCK" = "on_stock",
+    "ON_HAND" = "on_hand",
+    "REMOVED" = "removed"
 }
 
 export type PickRecord = {
-    reader: string,
+    readerId:number
+    readerName: string,
     pick_date: string,
-    return_date: string | null
+    return_date:string | null
 }
-export type Reader = {
-    id: string;
-    name: string;
-}
-export type BookReader = {
-    book_id: string;
-    reader_id: string;
-    pick_date: string;
-    return_date: string | null;
-}
-
-// export const BookDtoMongooseSchema = new mongoose.Schema({
-//     _id: { type: String, default: uuidv4, required: true },
-//     title: { type: String, required: true },
-//     author: { type: String, required: true },
-//     genre: { type: String, required: true },
-//     quantity: { type: Number, min:0, default:0 },
-//     status: {
-//         type: String,
-//         enum: Object.values(BookStatus),
-//         default: BookStatus.ON_STOCK,
-//         required: true
-//     },
-//     pickList: [
-//         {
-//             reader: { type: String, required: true },
-//             pick_date: { type: Date, required: true },
-//             return_date: { type: Date, default: null }
-//         }
-//     ]
-// })
-//
-// export const BookDtoDBModel = mongoose.model('Book', BookDtoMongooseSchema, 'book_collection');
