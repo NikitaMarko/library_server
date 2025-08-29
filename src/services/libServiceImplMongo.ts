@@ -1,5 +1,5 @@
 import {LibService} from "./libService.js";
-import {Book, BookDto, BookDtoWithReader, BookGenres, BookStatus} from "../model/Book.js";
+import {Book, BookDtoWithReader, BookGenres, BookStatus} from "../model/Book.js";
 import {BookMongooseModel} from "../model/BookMongooseModel.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import {Reader} from "../model/Reader.js";
