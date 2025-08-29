@@ -4,6 +4,12 @@ export type BookDto = {
     genre:string,
     quantity?:number
 }
+export type BookDtoWithReader = {
+    title: string;
+    author: string;
+    genre: string;
+    readerId: number;
+};
 
 export type Book = {
     id: string,

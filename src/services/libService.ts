@@ -1,4 +1,4 @@
-import {Book, BookGenres, BookStatus} from "../model/Book.ts";
+import {Book, BookDto, BookDtoWithReader, BookGenres, BookStatus} from "../model/Book.ts";
 import {Reader} from "../model/Reader.js";
 
 export interface LibService {
@@ -11,4 +11,5 @@ export interface LibService {
     getBooksByGenre:(genre:BookGenres) => Promise<Book[]>
     getBooksByGenreAndStatus:(genre:BookGenres, status: BookStatus) => Promise<Book[]>
     getBooksByReaderId:(readerId:number) => Promise<Book[]>
+    getBooksByTitlesAuthorAndGenre:(readerId:number) => Promise<BookDtoWithReader[]>
 }

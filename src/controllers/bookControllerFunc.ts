@@ -1,11 +1,10 @@
-import {Response, Request} from "express";
+import {Response, Request, NextFunction} from "express";
 //import {libServiceEmbedded as service} from "../services/libServiceImplEmbedded.js";
 import {Book, BookDto} from "../model/Book.js";
-import {convertBookDtoToBook, getGenres, getStatus} from "../utils/tools.js";
+import {convertBookDtoToBook, filterBookByReaderId, getGenres, getStatus} from "../utils/tools.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import {libServiceImplMongo as service} from "../services/libServiceImplMongo.js";
 import {accountServiceMongo as acc_service} from "../services/AccountServiceImplMongo.ts"
-
 
 export const getBooksByGenreAndStatus = async (req: Request, res: Response) => {
     const {genre, status} = req.query;
@@ -66,6 +65,21 @@ export const getBooksByReaderId = async (req: Request, res: Response) => {
     await acc_service.getAccountById(id);
     const result = await service.getBooksByReaderId(id);
     res.json(result);
+}
+
+export async function getBooksByTitlesAuthorAndGenre(req: Request, res: Response, next: NextFunction) {
+    try {
+        const readerIdRaw = req.query.readerId;
+        if (!readerIdRaw) return res.status(400).json({ message: "readerId is required" });
+
+        const readerId = Number(readerIdRaw);
+        if (Number.isNaN(readerId)) return res.status(400).json({ message: "readerId must be a number" });
+
+        const books = await filterBookByReaderId(readerId);
+        res.json(books);
+    } catch (err) {
+        next(err);
+    }
 }
 
 export const getBookById = async (req: Request, res: Response) => {

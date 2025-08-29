@@ -5,7 +5,7 @@ export interface AccountService{
     addAccount: (reader: Reader) => Promise<void>;
     getAccountById: (id:number) => Promise<Reader>;
     removeAccount: (id:number) => Promise<Reader>;
-    changePassword: (id: number, newPassword: string, oldPassword:string) => Promise<void>;
-    updateAccount:(updReader: Reader) => Promise<Reader>;
+    changePassword: (id: number, newPassword: string) => Promise<void>;
+    changeEmailNameAndBirthdate:(id: number, newEmail: string, newUserName: string, newBirthdate: string) => Promise<Reader>;
     changeRoles: (id:number, newRoles:Roles[]) => Promise<Reader>;
 }
