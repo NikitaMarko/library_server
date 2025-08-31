@@ -1,10 +1,10 @@
 import {Response, Request, NextFunction} from "express";
 //import {libServiceEmbedded as service} from "../services/libServiceImplEmbedded.js";
 import {Book, BookDto} from "../model/Book.js";
-import {convertBookDtoToBook, filterBookByReaderId, getGenres, getStatus} from "../utils/tools.js";
+import {convertBookDtoToBook, getGenres, getStatus} from "../utils/tools.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import {libServiceImplMongo as service} from "../services/libServiceImplMongo.js";
-import {accountServiceMongo as acc_service} from "../services/AccountServiceImplMongo.ts"
+import {accountServiceMongo as acc_service, filterBookByReaderId} from "../services/AccountServiceImplMongo.ts"
 
 export const getBooksByGenreAndStatus = async (req: Request, res: Response) => {
     const {genre, status} = req.query;

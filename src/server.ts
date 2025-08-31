@@ -10,6 +10,7 @@ import {configuration} from "./config/libConfig.js";
 import {authorize, checkAccountById} from "./middleware/authorization.js";
 import {Roles} from "./utils/libTypes.js";
 import {authenticate, skipRoutes} from "./middleware/authentication.js";
+import {queryLimiter} from "./middleware/queryLimiter.js";
 
 
 
@@ -23,6 +24,7 @@ export const launchServer = () => {
     app.use(express.json());
     app.use(authenticate(accountServiceMongo));
     app.use(skipRoutes(configuration.skipRoutes));
+    app.use(queryLimiter);
     app.use(checkAccountById(configuration.checkIdRoutes));
     app.use(morgan('dev'));
     app.use(morgan('combined', {stream:logStream}))

@@ -2,8 +2,10 @@ import {AccountService} from "./accountService.js";
 import {ReaderModel} from "../model/ReaderMongooseModel.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import bcrypt from "bcryptjs";
-import {Roles} from "../utils/libTypes.js";
+import {LoginPass, Roles} from "../utils/libTypes.js";
 import {Reader} from "../model/Reader.js";
+import {BookMongooseModel} from "../model/BookMongooseModel.js";
+import {getJWT} from "../utils/tools.js";
 
 export class AccountServiceImplMongo implements AccountService{
 
@@ -62,6 +64,20 @@ export class AccountServiceImplMongo implements AccountService{
         return result as unknown as Reader;
     }
 
+    async login(credentials: LoginPass): Promise<string> {
+        const profile = await ReaderModel.findById(credentials.userId);
+        if (!profile || !bcrypt.compareSync(credentials.password, profile.passHash))
+            throw new HttpError(401, "Incorrect login or pass");
+        const token = getJWT(credentials.userId, profile.roles as Roles[]);
+        return token;
+    }
+}
+
+export function filterBookByReaderId(readerId: number){
+    return BookMongooseModel.find({
+        'pickList.readerId': readerId,
+        'pickList.return_date': null
+        }).select('title author genre -_id').lean();
 }
 
 export const accountServiceMongo = new AccountServiceImplMongo();

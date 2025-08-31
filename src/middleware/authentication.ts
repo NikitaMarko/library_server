@@ -45,12 +45,14 @@ export const authenticate = (service: AccountService) => {
     }
 
 
-
 export const skipRoutes = (skipRoutes: string[]) =>
     (req: AuthRequest, res: Response, next: NextFunction) => {
-        const route = req.method + req.path //   POST/accounts
+        const route = req.method + req.path;
         if (!skipRoutes.includes(route) && !req.userId)
             throw new HttpError(401, "skipRoutes sent throw this error");
+        if (skipRoutes.some(r => route.startsWith(r) || req.path.startsWith(r))) {
+            return next();
+        }
 
         next();
     }

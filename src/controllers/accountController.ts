@@ -54,4 +54,8 @@ export const changeRoles = async (req: Request, res: Response) => {
     const readerWithNewRoles = await accountServiceMongo.changeRoles(id, newRoles);
     res.json(readerWithNewRoles)
 }
+export const login = async (req: Request, res: Response) => {
+    const result = await accountServiceMongo.login({userId: checkReaderId(req.body.userId), password: req.body.password});
+    res.json(result);
+};
 

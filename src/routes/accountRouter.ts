@@ -3,13 +3,14 @@ import * as controller from '../controllers/accountController.js'
 import {bodyValidation} from "../validation/bodyValidation.js";
 import {
     ChangeEmailNameBirthdateDtoSchema,
-    ChangePassDtoSchema, ChangeRolesSchema,
+    ChangePassDtoSchema, ChangeRolesSchema, LoginSchema,
     ReaderDtoSchema
 } from "../validation/joiSchema.js";
 
 
 export const accountRouter = express.Router();
 
+accountRouter.post('/login', bodyValidation(LoginSchema), controller.login);
 
 accountRouter.post('/',bodyValidation(ReaderDtoSchema),controller.addAccount);
 
@@ -27,3 +28,4 @@ accountRouter.get('/',controller.getAllAccount);
 accountRouter.get('/reader/:id',controller.getAccountById);
 
 accountRouter.put('/roles',bodyValidation(ChangeRolesSchema),controller.changeRoles)
+

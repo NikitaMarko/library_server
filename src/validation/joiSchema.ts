@@ -19,7 +19,7 @@ export const ChangeEmailNameBirthdateDtoSchema = Joi.object({
     newBirthdate: Joi.string().isoDate().required()
 })
 export const LoginSchema = Joi.object({
-    id:Joi.number().positive().max(999999999).min(100000000).required(),
+    userId:Joi.number().positive().max(999999999).min(100000000).required(),
     password: Joi.string().alphanum().min(8).required()
 
 })
@@ -54,6 +54,7 @@ export const ChangeRolesSchema = Joi.object({
         .items(Joi.string().valid("user", "admin", "librarian", "super"))
         .required()
 });
+
 
 // export const ChangeRolesSchema = Joi.array<Roles[]>()
 

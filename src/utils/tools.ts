@@ -80,10 +80,5 @@ export const getJWT = (userId:number, roles:Roles[]) =>{
         subject:userId.toString()
     }
 
-    return jwt.sign(payload,secret, options);
+    return jwt.sign(payload, secret, options);
 }
-export const filterBookByReaderId = (readerId: number) =>
-    BookMongooseModel.find({
-        'pickList.readerId': readerId,
-        'pickList.return_date': null
-    }).select('title author genre -_id').lean();
